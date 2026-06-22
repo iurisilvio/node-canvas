@@ -8,10 +8,10 @@ project adheres to [Semantic Versioning](http://semver.org/).
 (Unreleased)
 ==================
 ### Changed
-* Upgrade node-addon-api from 7.x to 8.x
+* Revert node-addon-api to 7.x and drop `NAPI_EXPERIMENTAL`. The nogc / `node_api_nogc_finalize` approach (#2562, #2436) relied on experimental N-API and did not fix the leak in practice; removed the experimental-only `Finalize()` override. JS references are released from C++ destructors under deferred finalization.
 ### Added
 ### Fixed
-* Fix memory leak caused by N-API weak reference callbacks being deferred to SetImmediate instead of running during GC. Enabled `NAPI_EXPERIMENTAL` to use `node_api_nogc_finalize` for ObjectWrap destructor. (#2436)
+* Memory leaks are addressed by the explicit cairo-surface frees/refcounts: JPEG EXIF rotation, libjpeg longjmp, SVG decode error paths, `image.src` on load error, and `cairo_pattern_t` ownership in `canvas_state_t`. `CanvasPattern` retains its source Image/Canvas to prevent a use-after-free of the backing surface's pixel buffer.
 
 3.2.3
 ==================

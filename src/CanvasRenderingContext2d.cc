@@ -246,11 +246,7 @@ Context2d::~Context2d() {
   state = nullptr;
   if (_layout) g_object_unref(_layout);
   if (_context) cairo_destroy(_context);
-  // _resetPersistentHandles() is intentionally NOT called here. It calls
-  // napi_delete_reference, which is unsafe when the destructor runs from
-  // inside GC (FATAL ERROR: "Finalizer is calling a function that may
-  // affect GC state"). Persistent handles are reset from Finalize(env)
-  // which is deferred via node_api_post_finalizer.
+  _resetPersistentHandles();
 }
 
 /*

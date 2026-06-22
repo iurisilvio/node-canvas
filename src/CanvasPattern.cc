@@ -127,8 +127,9 @@ repeat_type_t Pattern::get_repeat_type_for_cairo_pattern(cairo_pattern_t *patter
 
 Pattern::~Pattern() {
   if (_pattern) cairo_pattern_destroy(_pattern);
-}
-
-void Pattern::Finalize(Napi::Env env) {
-  _source.Reset();
+  // _source (the JS Image/Canvas that backs the cairo surface) is released
+  // by its Napi::Reference destructor. Keeping it alive until here prevents a
+  // use-after-free: Image::clearData() frees the pixel buffer that a
+  // create_for_data surface points at, even while a pattern still references
+  // the surface. Safe to release here under deferred (non-nogc) finalization.
 }
