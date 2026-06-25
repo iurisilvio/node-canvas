@@ -29,6 +29,5 @@ class Pattern : public Napi::ObjectWrap<Pattern> {
     Napi::Env env;
   private:
     cairo_pattern_t *_pattern;
-    Napi::Reference<Napi::Object> _source;
     repeat_type_t _repeat = REPEAT;
 };
