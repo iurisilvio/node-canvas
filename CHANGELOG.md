@@ -7,9 +7,11 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 (Unreleased)
 ==================
-### Changed
-### Added
 ### Fixed
+* Memory leak in JPEG EXIF rotation (rotate90/rotate270): the temporary rotated-pixel buffer (`new uint8_t[]`) was never freed. ~8.4 MiB leaked per `loadImage` of an EXIF-oriented JPEG (reproduced with before/after RSS). (#2574, merged upstream)
+* RsvgHandle / partial cairo surface leak on SVG decode error paths (e.g. SVGs with no intrinsic size). ~5 KiB/iter steady (reproduced with before/after RSS). (#2585)
+
+Scope: this fork is limited to the two leaks reproduced with before/after measurements. Other candidate fixes considered during the investigation — `image.src`-on-error, libjpeg longjmp, `cairo_pattern_t` refcount, CanvasPattern use-after-free guard, rare decoder error paths — were dropped after testing showed they had no measurable effect or could not be reproduced on libjpeg-turbo. Built on node-addon-api 7 (no `NAPI_EXPERIMENTAL`).
 
 3.2.3
 ==================

@@ -1,7 +1,7 @@
 {
   "name": "canvas",
   "description": "Canvas graphics API backed by Cairo",
-  "version": "3.2.3",
+  "version": "3.2.3-memfix.4",
   "author": "TJ Holowaychuk <tj@learnboost.com>",
   "main": "index.js",
   "browser": "browser.js",
@@ -22,12 +22,12 @@
     "pdf"
   ],
   "homepage": "https://github.com/Automattic/node-canvas",
-  "repository": "git://github.com/Automattic/node-canvas.git",
+  "repository": "git://github.com/iurisilvio/node-canvas.git",
   "scripts": {
     "prebenchmark": "node-gyp build",
     "benchmark": "node benchmarks/run.js",
     "lint": "standard examples/*.js test/server.js test/public/*.js benchmarks/run.js lib/context2d.js util/has_lib.js browser.js index.js",
-    "test": "mocha test/*.test.js",
+    "test": "node --expose-gc node_modules/mocha/bin/_mocha test/*.test.js",
     "pretest-server": "node-gyp build",
     "test-server": "node test/server.js",
     "generate-wpt": "node ./test/wpt/generate.js",
